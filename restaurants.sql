@@ -149,10 +149,13 @@ ORDER BY avg_rating DESC;
 
 -- 23. Find restaurants that have the highest rating within their city. (sub-query)
 
-SELECT name , rating
-FROM restaurants 
-WHERE rating = (SELECT MAX(rating) 
-                 FROM restaurants);
+SELECT r1.name ,r1.city, r1.rating
+FROM restaurants r1
+JOIN  (SELECT city, MAX(rating) AS max_rating
+                 FROM restaurants
+                 GROUP BY city) r2
+                 ON r1.city = r2.city
+                 AND r1.rating=r2.max_rating;
 
 
 -- 24. List cities that have more than one cuisine type available.
